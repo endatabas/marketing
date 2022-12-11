@@ -1,0 +1,8 @@
+I was trying to qualify for myself what it is that I like about this kind of software (endatabas or otherwise) and kind of collapsed on two qualities that feel like two sides of the same coin:
+
+1. "the elimination of unnecessary abstraction / duplication"
+2. "mechanical sympathy without mechanical slavery"
+
+#1 applies to almost anything in life, not just software. Tax law complexity is unnecessary. The level of abstraction in retail meat is arguably unnecessary (aka many people hate to think their food comes from animals). Low-value ETL, duplicated data, duplicated processes, duplicated ideas ... all these things are reduced or eliminated by something like endatabas.
+
+#2 is purely a software thing (I suppose there's perhaps something in there about electric motors over internal combustion, but I'd say that's a stretch) ... columnar data is sympathetic. Deleting data because we ran out of room is slavish.
