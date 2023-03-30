@@ -1,0 +1,32 @@
+= Tweets
+
+== NerdTV
+
+* https://en.wikipedia.org/wiki/NerdTV#Schedule
+
+* Doug Engelbart - https://archive.org/details/nerdtv011
+** JBS Haldane, "On Being The Right Size" - https://www.phys.ufl.edu/courses/phy3221/spring10/HaldaneRightSize.pdf
+
+
+== Problem Statement
+
+- https://www.thenile.dev/blog/things-dbs-dont-do
+- https://twitter.com/deobald/status/1633565239827648513
+
+== Philosophy
+
+- https://social.coop/@luis_in_brief/109980055433935059 ("The Box", filing cabinet, SQL)
+
+== Markets
+
+- https://www.youtube.com/watch?v=nLt1ramGtrI - Market Annealing: Getting to $10M ARR
+
+== Fireship.io
+
+- https://www.youtube.com/watch?v=jb2AvF8XzII (15 new dbs)
+
+== Making Python 100x faster
+
+Try writing a post in this vein once the repo is open?
+
+- neat: https://ohadravid.github.io/posts/2023-03-rusty-python/
