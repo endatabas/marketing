@@ -1,5 +1,9 @@
 = Endatabas Bookmarks
 
+This is a general list of handy URLs from the early days of
+endb exploration and development.
+
+
 == Formats: Dynamic, Columnar, Storage, Serde, Types
 
 === Common Lisp
@@ -14,3 +18,13 @@
 * https://github.com/jorgecarleitao/arrow2
 * IPC: https://github.com/DataEngineeringLabs/arrow-format
 * Flexbuffers: https://github.com/google/flatbuffers/tree/master/rust
+
+
+== Documentation
+
+=== "Write a Book"
+
+* https://archive.org/details/TheCProgrammingLanguageFirstEdition/mode/2up
+** https://download.clojure.org/papers/clojure-hopl-iv-final.pdf
+* http://www.lispworks.com/documentation/HyperSpec/Front/index.htm
+* https://lalrpop.github.io/lalrpop/
