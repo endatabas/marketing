@@ -1,0 +1,16 @@
+= Endatabas Bookmarks
+
+== Formats: Dynamic, Columnar, Storage, Serde, Types
+
+=== Common Lisp
+
+* https://github.com/conspack/cl-conspack
+* https://github.com/conspack
+* https://github.com/cosmos72/hyperluminal-mem
+* https://github.com/Virtual-Insurance-Products/cldb
+
+=== Language-Agnostic
+
+* https://github.com/jorgecarleitao/arrow2
+* IPC: https://github.com/DataEngineeringLabs/arrow-format
+* Flexbuffers: https://github.com/google/flatbuffers/tree/master/rust
