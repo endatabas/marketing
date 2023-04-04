@@ -19,10 +19,23 @@ endb exploration and development.
 * IPC: https://github.com/DataEngineeringLabs/arrow-format
 * Flexbuffers: https://github.com/google/flatbuffers/tree/master/rust
 
+=== Dispatch
+
+* https://github.com/numcl/specialized-function
+* https://github.com/alex-gutev/static-dispatch
+* https://quickref.common-lisp.net/static-dispatch.html
+
+== Drivers / Clients
+
+* https://github.com/sunng87/pgwire
+* https://pola-rs.github.io/polars-book/user-guide/
+
 
 == Documentation
 
 === "Write a Book"
+
+* https://rust-lang.github.io/mdBook/format/mdbook.html
 
 * https://archive.org/details/TheCProgrammingLanguageFirstEdition/mode/2up
 ** https://download.clojure.org/papers/clojure-hopl-iv-final.pdf
