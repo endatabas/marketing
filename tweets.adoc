@@ -30,3 +30,7 @@
 Try writing a post in this vein once the repo is open?
 
 - neat: https://ohadravid.github.io/posts/2023-03-rusty-python/
+
+== Mikey and Rust Generics
+
+- https://blog.mikey.nz/how-to-dance-with-embedded-rust-generics
