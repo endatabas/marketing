@@ -30,6 +30,10 @@ endb exploration and development.
 * https://github.com/sunng87/pgwire
 * https://pola-rs.github.io/polars-book/user-guide/
 
+== Distributed / Leader / Consensus
+
+* http://muratbuffalo.blogspot.com/2021/02/foundational-distributed-systems-papers.html
+
 
 == Documentation
 
