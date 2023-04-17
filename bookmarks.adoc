@@ -49,3 +49,7 @@ endb exploration and development.
 === Reference Docs
 
 * https://www.cockroachlabs.com/docs/stable/ (flat style)
+
+== Common Lisp
+
+* Alan Dipert: https://www.youtube.com/watch?v=44Q9ew9JH_U
