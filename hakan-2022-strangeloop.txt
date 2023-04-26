@@ -1,0 +1,13 @@
+;; This buffer is for text that is not saved, and for Lisp evaluation.
+;; To create a file, visit it with C-x C-f and enter text in its buffer.
+
+In an distributed setting with a large amount of append-only immutable
+data, the strategies needed to effectively index data change. Recent
+research in database indexing is exploring so called "learned
+indexes", which uses machine learning to build predictive models of
+the data, and also adaptive indexes - where the indexes start out as
+small lightweight metadata that helps navigate the raw data, and
+become more fine-grained as the data is queried. In this talk we'll
+discuss the engineering constraints we run up against in this setting,
+and how to solve them in ways that leverage the append-only and
+immutable nature of the underlying data.
