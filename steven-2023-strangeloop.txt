@@ -1,0 +1,39 @@
+
+Session title:
+
+* All the good database ideas were used up in the 1980s
+* 1985: The Golden Age of Databases
+* The database scene peaked in 1984
+
+Technical Bullets:
+
+* unlimited disk
+* vector dbs
+* relational and document models
+
+Cultural Bullets:
+
+* SQL
+* immutable data + FP
+* strong, dynamic types
+
+Description:
+
+The goals of database research have extended far beyond technical
+feasibility for decades.
+In the 1970s and 1980s, disk and memory were major constraints on
+database design.
+The utility of the DSM (columnar data) was unclear.
+Relational, document, and graph storage models hadn't proven themselves yet.
+
+In the 2020s, we have unlimited cloud storage, productionized vector
+databases, and a clear appreciation of each storage model.
+In addition to loosening our technical constraints, software culture
+has evolved.
+A functional and dynamic query language for immutable data is possible
+today, where it may not have had an audience even 10 years ago.
+
+In this talk, we'll retrospect on the database dreams of the 70s, 80s,
+and 90s.
+We'll look at databases applying these decades-old ideas -- and what
+problems they solve.
