@@ -1,23 +1,24 @@
 
-Session title:
+## Session title:
 
 * All the good database ideas were used up in the 1980s
 * 1985: The Golden Age of Databases
 * The database scene peaked in 1984
 
-Technical Bullets:
+## Technical Bullets:
 
 * unlimited disk
 * vector dbs
 * relational and document models
 
-Cultural Bullets:
+## Cultural Bullets:
 
 * SQL
 * immutable data + FP
 * strong, dynamic types
 
-Description:
+
+## Description v1:
 
 The goals of database research have extended far beyond technical
 feasibility for decades.
@@ -37,3 +38,35 @@ In this talk, we'll retrospect on the database dreams of the 70s, 80s,
 and 90s.
 We'll look at databases applying these decades-old ideas -- and what
 problems they solve.
+
+
+---
+
+## Title Options v2:
+
+* The 20th Century Database Prophecy
+* The fun and optimism of the 80s Database Prophecy
+* The Other 1984: A joyful database prophecy comes true
+* 1984 to 2024: An optimistic database prophecy comes true
+* The Immutable Database Prophecy of the 1980s
+* The database prophets of the 1970s: their optimism and legacy
+
+## Description v2:
+
+Revisiting database white papers from the 1970s and 1980s, we've
+found that there was a certain joy and optimism in the thinking of
+that era which parallels our own childhood hacking.
+
+Grand ambitions from that time included infinite disk, immutable
+databases, columnar storage, semi-structured records, and unifying
+query languages.
+
+If 1984 held pure potential, 2024 holds the power to make storage
+as simple as researchers once dreamed.
+
+In this talk, we'll explore the vision and ambition of a few select
+papers from that time, then connect each to its modern conclusions.
+
+In aggregate, these papers (and their often-unlikely endgame) tell
+a fun, exploratory, and hopeful story about the immutable databases
+of the 2020s.
