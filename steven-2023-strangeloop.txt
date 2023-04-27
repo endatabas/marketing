@@ -61,6 +61,9 @@ Grand ambitions from that time included infinite disk, immutable
 databases, columnar storage, semi-structured records, and unifying
 query languages.
 
+The many data products of today achieve these ambitions, even
+though they often do so in isolation.
+
 If 1984 held pure potential, 2024 holds the power to make storage
 as simple as researchers once dreamed.
 
