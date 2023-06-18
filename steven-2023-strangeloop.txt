@@ -50,26 +50,25 @@ problems they solve.
 * 1984 to 2024: An optimistic database prophecy comes true
 * The Immutable Database Prophecy of the 1980s
 * The database prophets of the 1970s: their optimism and legacy
+* The Other 1984: An optimistic database dream comes true
 
 ## Description v2:
 
 Revisiting database white papers from the 1970s and 1980s, we've
 found that there was a certain joy and optimism in the thinking of
 that era which parallels our own childhood hacking.
-
-Grand ambitions from that time included infinite disk, immutable
+Grand ambitions from that time include infinite disk, immutable
 databases, columnar storage, semi-structured records, and unifying
 query languages.
 
-The many data products of today achieve these ambitions, even
+Forty years later, many data products have achieved these goals --
 though they often do so in isolation.
-
-If 1984 held pure potential, 2024 holds the power to make storage
-as simple as researchers once dreamed.
+If 1984 held optimism and potential, 2024 holds the power to make
+storage systems as simple as researchers once dreamed.
 
 In this talk, we'll explore the vision and ambition of a few select
-papers from that time, then connect each to its modern conclusions.
-
+papers from that time, then connect each to its modern technical
+implementation.
 In aggregate, these papers (and their often-unlikely endgame) tell
 a fun, exploratory, and hopeful story about the immutable databases
 of the 2020s.
