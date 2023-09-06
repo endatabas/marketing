@@ -1,0 +1,13 @@
+#!/usr/bin/env expect
+
+spawn bash
+
+#send "cd ~/work/endatabas/endb/examples/\r\n"
+cd ~/work/endatabas/endb/examples/
+
+pwd
+
+spawn ./endb_console.py
+
+send "print 'hi'"
+interact
