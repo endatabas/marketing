@@ -8,6 +8,12 @@ import re
 
 cmd = open("commands.ydo", "r")
 
+def reset():
+    os.system('./reset.sh')
+
+def escape(s):
+    return re.sub(r'"', '\\"', s)
+
 def next():
     line = cmd.readline()
     stripped = line.strip()
@@ -19,12 +25,13 @@ def next():
     else:
         return next()
 
+reset()
 while True:
     event = keyboard.read_event()
     if event.event_type == 'down':
         if event.name == 'alt':
             time.sleep(0.2)
-            c = next()
-            os.system(f"ydotool type --next-delay 5 --key-delay 2 '{c}'")
+            c = escape(next())
+            os.system(f'ydotool type --next-delay 5 --key-delay 2 "{c}"')
         elif event.name == 'ctrl' or event.name == 'caps lock':
             print('ctrl detected. press ctrl+c to quit.')

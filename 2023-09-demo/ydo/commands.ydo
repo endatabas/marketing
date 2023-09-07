@@ -1,11 +1,4 @@
 
-# reset the environment
-mkdir -p ~/tmp/endb/examples
-cd ~/tmp/endb
-rm -rf ~/tmp/endb/endb_data
-cp -r ~/work/endatabas/endb/examples/endb* ~/tmp/endb/examples/.
-clear
-
 # server init
 pwd
 ls -l
@@ -13,10 +6,8 @@ ls examples
 mkdir -p endb_data
 docker pull docker.io/endatabas/endb:latest
 docker run --rm -p 3803:3803 -v endb_data:/app/endb_data docker.io/endatabas/endb:latest
-...
-Don't forget to switch to a new tab!
 
 # curl
-curl -d "SELECT 'Hello World!'" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
+curl -d "SELECT 'Hello World'" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
 curl -d "INSERT INTO users (name) VALUES ('Tianyu')" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
 curl -d "SELECT * FROM users" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
