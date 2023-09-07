@@ -30,7 +30,7 @@ while True:
     event = keyboard.read_event()
     if event.event_type == 'down':
         if event.name == 'alt':
-            time.sleep(0.2)
+            time.sleep(0.2) # needed to avoid seeing ALT in keydown state
             c = escape(next())
             os.system(f'ydotool type --next-delay 5 --key-delay 2 "{c}"')
         elif event.name == 'ctrl' or event.name == 'caps lock':

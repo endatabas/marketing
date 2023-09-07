@@ -15,9 +15,9 @@ curl -d "SELECT 'Hello World'" -H "Content-Type: application/sql" -X POST http:/
 curl -d "INSERT INTO products (name) VALUES ('Taro')" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
 curl -d "SELECT * FROM products" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
 # more interesting query: json content type, insert jagged doc, parameters
-curl -d '{"q": "INSERT INTO products {name: ?, price: ?}", "p": ["Mangoes", 3.99]}' -H "Content-Type: application/json" -X POST http://localhost:3803/sql
+curl -d '{"q": "INSERT INTO products {name: ?, price: ?, last_shipped: ?}", "p": ["Mangoes", 3.99, 2023-09-05]}' -H "Content-Type: application/json" -X POST http://localhost:3803/sql
 # let's get our products back out, but with another content type
-curl -d "SELECT * FROM products" -H "Accept: application/ld+json" -X POST http://localhost:3803/sql
+curl -d "SELECT * FROM products" -H "Content-Type: application/sql" -H "Accept: application/ld+json" -X POST http://localhost:3803/sql
 
 # the HTTP API supports a variety of other ways to express a query,
 # but they're all equivalent. you can choose the one that's
@@ -28,8 +28,8 @@ ls -l examples
 cd examples
 less endb.py
 python3
-include endb
-sql("INSERT INTO products {name: 'Ketchup', price: 2.99}")
+import endb
+endb.Endb().sql("INSERT INTO products {name: 'Ketchup', price: 2.99}")
 wc -l endb.py
 wc -l endb.mjs
 # we will provide idiomatic native client libraries for popular languages
@@ -57,17 +57,41 @@ SELECT * FROM sales s JOIN products p ON s.name = p.name
 # when we say "full history", we really mean (to programmers, at least)
 # that data in endb is immutable. let's see how that works.
 INSERT INTO products {name: "Mustard", price: 5.99}
-SELECT CURRENT_TIMESTAMP
+SELECT strftime('%Y-%m-%dT%H:%M:%S', CURRENT_TIMESTAMP) AS now;
 UPDATE products SET price = 4.99 WHERE name = 'Mustard'
 SELECT * FROM products WHERE name = 'Mustard'
 # all queries default to running "as of now", which is the normal
 # behaviour you'd expect in any other database. we see the new 4.99 price.
 
-# SELECT * FROM products WHERE name = 'Mustard' FOR SYSTEM_TIME AS OF
+# SELECT * FROM products FOR SYSTEM_TIME AS OF
 
-SELECT * FROM products WHERE name = 'Mustard' FOR SYSTEM_TIME ALL
+SELECT * FROM products FOR SYSTEM_TIME ALL WHERE name = 'Mustard'
 
 # of course, a modern database needs to comply with laws like GDPR,
 # which is why endb supports ERASE
 ERASE FROM products WHERE name = 'Mustard'
-SELECT * FROM products WHERE name = 'Mustard' FOR SYSTEM_TIME ALL
+SELECT * FROM products FOR SYSTEM_TIME ALL
+
+# nested
+# naturally, document-shaped rows support native nested data
+# while this is similar to JSON, everything is strongly-typed
+INSERT INTO stores {brand: "Schönfinkel's", addresses: [{city: "Ekaterinoslav", country: "Russia", active: 1888-09-29}, {city: "Göttingen", country: "Germany", active: 1920-12-20}]}
+INSERT INTO stores {brand: "Curry's", addresses: [{city: "Millis", country: "USA", active: 1900-09-12}, {city: "Boston", country: "Germany", active: 1930-07-15}]}
+SELECT addresses[0].city FROM stores
+SELECT addresses..country FROM stores
+# row literals, wildcards, and path functions also work
+
+# UPDATE $path
+# while many people may prefer endb's path functions for manipulating data,
+# the 'update' statement also allows path expressions
+
+UPDATE stores SET $.addresses[1].city = 'Göttingen' WHERE brand = "Curry's";
+SELECT * FROM stores WHERE brand = "Curry's";
+
+# info schema
+# even without forcing strict schema on tables, it is possible to inspect
+# the information schema through regular queries
+SELECT * FROM information_schema.tables;
+SELECT * FROM information_schema.columns;
+
+cd ~/tmp/endb/
