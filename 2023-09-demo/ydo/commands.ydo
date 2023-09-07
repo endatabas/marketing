@@ -2,12 +2,72 @@
 # server init
 pwd
 ls -l
-ls examples
 mkdir -p demo_data
 docker pull docker.io/endatabas/endb:latest
 docker run --rm -p 3803:3803 -v demo_data:/app/demo_data docker.io/endatabas/endb:latest
 
 # curl
 curl -d "SELECT 'Hello World'" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
-curl -d "INSERT INTO users (name) VALUES ('Tianyu')" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
-curl -d "SELECT * FROM users" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
+# since endb is "schemaless" (which really means schemas are per-document),
+# there's no meaning to CREATE TABLE and you start right away by inserting data.
+# as a side-note, this allows you to add semi-structured data instantly
+# ...for example, you could scrape a bunch of pricing data and jam it straight into endb
+curl -d "INSERT INTO products (name) VALUES ('Taro')" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
+curl -d "SELECT * FROM products" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
+# more interesting query: json content type, insert jagged doc, parameters
+curl -d '{"q": "INSERT INTO products {name: ?, price: ?}", "p": ["Mangoes", 3.99]}' -H "Content-Type: application/json" -X POST http://localhost:3803/sql
+# let's get our products back out, but with another content type
+curl -d "SELECT * FROM products" -H "Accept: application/ld+json" -X POST http://localhost:3803/sql
+
+# the HTTP API supports a variety of other ways to express a query,
+# but they're all equivalent. you can choose the one that's
+# most comfortable to you.
+
+# examples
+ls -l examples
+cd examples
+less endb.py
+python3
+include endb
+sql("INSERT INTO products {name: 'Ketchup', price: 2.99}")
+wc -l endb.py
+wc -l endb.mjs
+# we will provide idiomatic native client libraries for popular languages
+# in the future -- but for now, almost anyone can write a client library
+# in a few dozen lines of code
+
+# console
+less endb_console.py
+# this little toy console is what we'll use for the remaining examples,
+# just so we can focus on the SQL dialect. the console itself isn't
+# interesting or important.
+wc -l endb_console.py
+./endb_console.py
+
+# sql literals
+INSERT INTO sales {name: "Ketchup", at: 2023-09-07T07:34:02}
+# endb also has convenient ISO literals for dates, times, and intervals
+# as well as all the SQL literals you'd expect
+
+# joins
+# briefly, it's worth noting that all joins in endb are ad-hoc
+SELECT * FROM sales s JOIN products p ON s.name = p.name
+
+# full history
+# when we say "full history", we really mean (to programmers, at least)
+# that data in endb is immutable. let's see how that works.
+INSERT INTO products {name: "Mustard", price: 5.99}
+SELECT CURRENT_TIMESTAMP
+UPDATE products SET price = 4.99 WHERE name = 'Mustard'
+SELECT * FROM products WHERE name = 'Mustard'
+# all queries default to running "as of now", which is the normal
+# behaviour you'd expect in any other database. we see the new 4.99 price.
+
+# SELECT * FROM products WHERE name = 'Mustard' FOR SYSTEM_TIME AS OF
+
+SELECT * FROM products WHERE name = 'Mustard' FOR SYSTEM_TIME ALL
+
+# of course, a modern database needs to comply with laws like GDPR,
+# which is why endb supports ERASE
+ERASE FROM products WHERE name = 'Mustard'
+SELECT * FROM products WHERE name = 'Mustard' FOR SYSTEM_TIME ALL
