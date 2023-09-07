@@ -3,6 +3,10 @@
 ## Running
 
 Requires `ydotool`, which requires root.
+Install `ydotool` (1.0.x) from source.
+The `ydotool` available in the 22.04 LTS repo will not work.
+
+Run the script, then switch to a fresh terminal window/tab:
 
 ```sh
 sudo ./loop.py
@@ -18,10 +22,8 @@ It can do some weird things.
 
 ## Semi-automated
 
-You can try running this yourself, but you'll need to install ydotool from source.
-The `ydotool` available in the 22.04 LTS repo will not work.
-
-The "script" requires manual intervention in a few points:
+You can try running this yourself,
+but the "script" requires manual intervention in a few points:
 
 * switch away from server tab
 * `<ctrl+d>` to stop the python3 console
