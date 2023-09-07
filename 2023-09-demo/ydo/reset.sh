@@ -4,6 +4,7 @@
 su steven <<EOSU
 mkdir -p ~/tmp/endb/examples
 cd ~/tmp/endb
-rm -rf ~/tmp/endb/endb_data
+rm -rf ~/tmp/endb/demo_data
+docker volume rm --force demo_data
 cp -r ~/work/endatabas/endb/examples/endb* ~/tmp/endb/examples/.
 EOSU
