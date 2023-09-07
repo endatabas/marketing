@@ -12,12 +12,12 @@ curl -d "SELECT 'Hello World'" -H "Content-Type: application/sql" -X POST http:/
 # there's no meaning to CREATE TABLE and you start right away by inserting data.
 # as a side-note, this allows you to add semi-structured data instantly
 # ...for example, you could scrape a bunch of pricing data and jam it straight into endb
-curl -d "INSERT INTO products (name) VALUES ('Taro')" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
-curl -d "SELECT * FROM products" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
+curl -d "INSERT INTO sales (name, at) VALUES ('Taro', DATE '2023-08-30')" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
+curl -d "SELECT * FROM sales" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
 # more interesting query: json content type, insert jagged doc, parameters
-curl -d '{"q": "INSERT INTO products {name: ?, price: ?, last_shipped: ?}", "p": ["Mangoes", 3.99, 2023-09-05]}' -H "Content-Type: application/json" -X POST http://localhost:3803/sql
-# let's get our products back out, but with another content type
-curl -d "SELECT * FROM products" -H "Content-Type: application/sql" -H "Accept: application/ld+json" -X POST http://localhost:3803/sql
+curl -d '{"q": "INSERT INTO sales {name: ?, at: ?}", "p": ["Mangoes", {"@type": "xsd:date", "@value": "2023-09-05"}]}' -H "Content-Type: application/json" -X POST http://localhost:3803/sql
+# let's get our sales back out, but with another content type
+curl -d "SELECT * FROM sales" -H "Content-Type: application/sql" -H "Accept: application/ld+json" -X POST http://localhost:3803/sql
 
 # the HTTP API supports a variety of other ways to express a query,
 # but they're all equivalent. you can choose the one that's
@@ -75,7 +75,7 @@ SELECT * FROM products FOR SYSTEM_TIME ALL
 # nested
 # naturally, document-shaped rows support native nested data
 # while this is similar to JSON, everything is strongly-typed
-INSERT INTO stores {brand: "Schönfinkel's", addresses: [{city: "Ekaterinoslav", country: "Russia", active: 1888-09-29}, {city: "Göttingen", country: "Germany", active: 1920-12-20}]}
+INSERT INTO stores {brand: "Schonfinkel's", addresses: [{city: "Ekaterinoslav", country: "Russia", active: 1888-09-29}, {city: "Gottingen", country: "Germany", active: 1920-12-20}]}
 INSERT INTO stores {brand: "Curry's", addresses: [{city: "Millis", country: "USA", active: 1900-09-12}, {city: "Boston", country: "Germany", active: 1930-07-15}]}
 SELECT addresses[0].city FROM stores
 SELECT addresses..country FROM stores
@@ -85,7 +85,7 @@ SELECT addresses..country FROM stores
 # while many people may prefer endb's path functions for manipulating data,
 # the 'update' statement also allows path expressions
 
-UPDATE stores SET $.addresses[1].city = 'Göttingen' WHERE brand = "Curry's";
+UPDATE stores SET $.addresses[1].city = 'Gottingen' WHERE brand = "Curry's";
 SELECT * FROM stores WHERE brand = "Curry's";
 
 # info schema
