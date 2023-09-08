@@ -24,11 +24,8 @@ It can do some weird things.
 ## Semi-automated
 
 You can try running this yourself,
-but the "script" requires manual intervention in a few points:
+but the "script" requires manual intervention at a couple points:
 
-* switch away from server tab
-* `<ctrl+d>` to stop the python3 console
-* `<space>` to show the second half of the file(s) in less, then `<q>`
 * type out the "SELECT ... AS OF" by hand
-* `<ctrl+d>` to stop the endb_console.py
+  (the script can't know what time is returned from `CURRENT_TIMESTAMP`)
 * 2x final `<alt>` taps if you want it to clean up after itself.
