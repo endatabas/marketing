@@ -8,22 +8,24 @@ docker pull docker.io/endatabas/endb:latest
 # Then we'll start an empty database.
 docker run --rm -p 3803:3803 -v demo_data:/app/demo_data docker.io/endatabas/endb:latest
 
+@CTRL+PGDN
+
 # Clients talk to Endb over HTTP, and any HTTP client will work.
 # Hello World!
 curl -d "SELECT 'Hello World'" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
 
 # Since endb schemas are per-document, there's no meaning to CREATE TABLE
-# and you start right away by inserting data.
+# and you start right away by inserting a row with SQL you already know.
 # (As a side-note, this allows you to jam semi-structured data,
 #  like a random json document, straight into endb.)
-curl -d "INSERT INTO sales (name, at) VALUES ('Taro', DATE '2023-08-30')" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
+curl -d "INSERT INTO sales (name, price, at) VALUES ('Taro', 1.99, DATE '2023-08-30')" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
 
 # Here's the data we just inserted, returned as JSON-LD.
 curl -d "SELECT * FROM sales" -H "Content-Type: application/sql" -H "Accept: application/ld+json" -X POST http://localhost:3803/sql
 
-# Here's a more interesting query: we'll use a json content type, insert a jagged doc
+# Here's a more interesting statement: we'll use a json content type, insert a jagged doc
 # (with different columns than before) with a JSON-LD typed parameter
-curl -d '{"q": "INSERT INTO sales {name: ?, at: ?}", "p": ["Mangoes", {"@type": "xsd:date", "@value": "2023-09-05"}]}' -H "Content-Type: application/json" -X POST http://localhost:3803/sql
+curl -d '{"q": "INSERT INTO sales {name: ?, price: ?, at: ?}", "p": ["Mangoes", 15.99, {"@type": "xsd:date", "@value": "2023-09-05"}]}' -H "Content-Type: application/json" -X POST http://localhost:3803/sql
 
 # let's get our sales back out as vanilla JSON
 curl -d "SELECT * FROM sales" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
@@ -32,7 +34,7 @@ curl -d "SELECT * FROM sales" -H "Content-Type: application/sql" -X POST http://
 # but they're all equivalent.
 
 # let's clear the screen and look at some examples
-clear
+@CTRL+L
 
 # we have a few examples here
 ls -l examples
@@ -47,39 +49,42 @@ cd examples
 # Here's a simple statement sent with the Python library.
 python3
 import endb
-endb.Endb().sql("INSERT INTO products {name: 'Ketchup', price: 2.99}")
+endb.Endb().sql("INSERT INTO products {name: 'Mangoes', price: 2.99}")
 
 # We'll provide native client libraries for popular languages
-# in the future -- but for now, almost anyone can write a client library
-# in a few dozen lines of code
+# in the future -- but for now, anyone can write a client library
+# with a few dozen lines of code.
+
+# we'll drop out of python
+@CTRL+D
 
 # We also have a little toy console we'll use for the remaining examples,
-# so we can focus on the SQL dialect. The console itself isn't
-# interesting or important. Anyone could write it.
+# so we can focus on the SQL dialect.
 ./endb_console.py
 
 # First up, let's have a look at some example literals.
 # The TEXT datatype permits double quotes.
 # Timestamps can be represented in either SQL or ISO formats.
-INSERT INTO sales {name: "Ketchup", at: 2023-09-07T07:34:02}
+INSERT INTO sales {name: "Mangoes", price: 22.99, at: 2023-09-07T07:34:02}
 
 # Endb also has convenient ISO literals for dates, times, intervals
 # as well as all the SQL literals you'd expect.
 
 # All joins in endb are ad-hoc.
 SELECT * FROM sales s JOIN products p ON s.name = p.name
-# TODO: data for aggregate
+
+# Here's an aggregate
 SELECT p.name, SUM(s.price) AS total FROM sales s JOIN products p ON s.name = p.name GROUP BY p.name
 
 # Time for full history!
-clear
+@CTRL+L
 
 # When we say "full history", we really mean (to programmers, at least)
 # that data in endb is immutable.
 
 INSERT INTO products {name: "Mustard", price: 5.99}
 
-# We'll grab the current time before we update, so we can time-travle back here.
+# We'll grab the current time before we update, so we can time-travel back here.
 SELECT strftime('%Y-%m-%dT%H:%M:%S', CURRENT_TIMESTAMP) AS now;
 UPDATE products SET price = 4.99 WHERE name = 'Mustard'
 
@@ -102,7 +107,7 @@ ERASE FROM products WHERE name = 'Mustard'
 SELECT * FROM products FOR SYSTEM_TIME ALL
 
 # on to documents!
-clear
+@CTRL+L
 
 # Document-shaped rows support strongly-typed, native nested data.
 
@@ -128,7 +133,7 @@ UPDATE stores SET $.addresses[1].city = 'Gottingen' WHERE brand = "Curry's";
 SELECT * FROM stores WHERE brand = "Curry's";
 
 # last, we'll clear that away to have a look at endb's schema
-clear
+@CTRL+L
 
 # even without forcing strict schema on tables, it is possible to inspect
 # the information schema through regular queries
@@ -136,4 +141,6 @@ SELECT * FROM information_schema.columns WHERE table_name = 'stores';
 
 # We encourage you to try it for yourself!
 
+# done! reset
+@CTRL+D
 cd ~/tmp/endb/
