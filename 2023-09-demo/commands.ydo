@@ -137,8 +137,10 @@ SELECT * FROM stores WHERE brand = "Curry's";
 # the information schema through regular queries
 SELECT * FROM information_schema.columns WHERE table_name = 'stores';
 
-# We encourage you to try it for yourself!
+# If you'd like to try Endb yourself, this demo is available at
+# endatabas.com/2023_demo
+@CTRL+D
+echo "endatabas.com/2023_demo"
 
 # done! reset
-@CTRL+D
 cd ~/tmp/endb/
