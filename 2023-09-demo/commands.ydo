@@ -33,20 +33,16 @@ curl -d "SELECT * FROM sales" -H "Content-Type: application/sql" -X POST http://
 # The HTTP API supports other ways to express a query,
 # but they're all equivalent.
 
-# let's clear the screen and look at some examples
+# let's clear the screen and look at a code example
 @CTRL+L
 
-# we have a few examples here
-ls -l examples
-
-# each one is less than a hundred lines
-wc -l examples/*.py
-wc -l examples/endb.mjs
+# We have a few little scripts here, in JavaScript and Python.
+# Each one is under a hundred lines.
+wc -l examples/*.{py,mjs}
 cd examples
 
-# The python and javascript examples are tiny wrapper libraries
-# around the standard HTTP libs.
-# Here's a simple statement sent with the Python library.
+# These examples are tiny wrapper libraries around standard HTTP libs.
+# Here's an insert sent with the Python library.
 python3
 import endb
 endb.Endb().sql("INSERT INTO products {name: 'Mangoes', price: 2.99}")
@@ -55,8 +51,9 @@ endb.Endb().sql("INSERT INTO products {name: 'Mangoes', price: 2.99}")
 # in the future -- but for now, anyone can write a client library
 # with a few dozen lines of code.
 
-# we'll drop out of python
+# let's drop out of python and look at the SQL dialect
 @CTRL+D
+@CTRL+L
 
 # We also have a little toy console we'll use for the remaining examples,
 # so we can focus on the SQL dialect.
