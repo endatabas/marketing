@@ -3,12 +3,13 @@
 ## Running
 
 Requires `ydotool`, which requires root.
-Install `ydotool` (1.0.x) from source.
+[Install `ydotool` (1.0.x) from source.](https://askubuntu.com/questions/1413829/how-can-i-install-and-use-the-latest-ydotool-keyboard-automation-tool-working-o)
 The `ydotool` available in the 22.04 LTS repo will not work.
 
-Run the script, then switch to a fresh terminal window/tab:
+Start the daemon, run the script, then switch to a fresh terminal window/tab:
 
 ```sh
+systemctl start ydotool
 sudo ./loop.py
 ```
 
