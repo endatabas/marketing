@@ -1,22 +1,33 @@
 # Endatabas Demo - 2023-09-11
 
-## Running
+## Setup
 
 Requires `ydotool`, which requires root.
 [Install `ydotool` (1.0.x) from source.](https://askubuntu.com/questions/1413829/how-can-i-install-and-use-the-latest-ydotool-keyboard-automation-tool-working-o)
 The `ydotool` available in the 22.04 LTS repo will not work.
 
-Start the daemon, run the script, then switch to a fresh terminal window/tab:
+## Running
+
+1. start 3 terminal tabs in these directories, respectively:
+    1. `marketing/2023-09-demo`
+    2. `~/tmp/endb`
+    3. `~/tmp/endb`
+2. start the daemon and run the script in one tab
 
 ```sh
 systemctl start ydotool
 sudo ./loop.py
 ```
 
+3. switch to the second terminal tab
+    * be aware the script will switch to the third tab on its own
+
 All keyboard input other than `<ctrl+c>` and `<alt>` is ignored.
 Just tap `<alt>` to run the upcoming command.
 
-NOTE: Be aware that if you don't get to the end of the commands.ydo "script"
+## Caveat Emptor
+
+Be aware that if you don't get to the end of the commands.ydo "script"
 or `<ctrl+c>` the runner, `ydotool` will (quite violently) smash random
 keystrokes into whatever window has the focus in GNOME.
 It can do some weird things.

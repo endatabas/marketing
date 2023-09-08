@@ -95,6 +95,7 @@ SELECT * FROM products WHERE name = 'Mustard'
 # However, we can travel back in time to the timestamp between
 # our insert and update to see the old value.
 # SELECT * FROM products FOR SYSTEM_TIME AS OF
+@AS_OF
 
 # It's also possible to get an omniscient view of all system time.
 # Here are all the past states for Mustard:

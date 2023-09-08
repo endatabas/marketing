@@ -5,14 +5,27 @@ import os
 import time
 import keyboard
 import re
+from time import gmtime, strftime
 
 cmd = open("commands.ydo", "r")
+saved_timestamp = None
 
 def reset():
     os.system('./reset.sh')
 
 def escape(s):
     return re.sub(r'"', '\\"', s)
+
+# HACK: this is awful, but it beats typing by hand and slowing the demo
+def save_current_timestamp(c):
+    global saved_timestamp
+    if re.match('.*CURRENT_TIMESTAMP.*', c):
+        saved_timestamp = strftime("%Y-%m-%dT%H:%M:%S", gmtime())
+
+def test_current_timestamp():
+    if saved_timestamp is None:
+        print('Error: CURRENT_TIMESTAMP was never saved.')
+        exit(1)
 
 def get_next():
     line = cmd.readline()
@@ -37,8 +50,13 @@ def run_next():
     elif re.match('^@CTRL\+PGDN$', c.strip()):
         # 29 = CTRL, 109 = 'PGDN'
         os.system('ydotool key --key-delay 1 29:1 109:1 109:0 29:0')
+    elif re.match('^@AS_OF$', c.strip()):
+        test_current_timestamp()
+        os.system(f'ydotool type --next-delay 2 --key-delay 0 "SELECT * FROM products FOR SYSTEM_TIME AS OF {saved_timestamp};"')
+        os.system('ydotool key --key-delay 1 28:1 28:0')
     else:
         os.system(f'ydotool type --next-delay 2 --key-delay 0 "{c}"')
+        save_current_timestamp(c)
 
 print('resetting environment. ignore any docker volume errors.')
 reset()
