@@ -2,15 +2,15 @@
 # Endatabas is a SQL document database with full history.
 # This demo will explain what that means.
 
-# First, we'll pull the latest release.
+# Let's pull the latest release.
 docker pull docker.io/endatabas/endb:latest
 
-# Then we'll start an empty database.
+# ...and start an empty database.
 docker run --rm -p 3803:3803 -v demo_data:/app/demo_data docker.io/endatabas/endb:latest
 
 @CTRL+PGDN
 
-# Clients talk to Endb over HTTP, and any HTTP client will work.
+# Endb speaks HTTP.
 # Hello World!
 curl -d "SELECT 'Hello World'" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
 
@@ -51,7 +51,7 @@ endb.Endb().sql("INSERT INTO products {name: 'Mangoes', price: 2.99}")
 # in the future -- but for now, anyone can write a client library
 # with a few dozen lines of code.
 
-# let's drop out of python and look at the SQL dialect
+# let's drop out of python and take a closer look at Endb SQL
 @CTRL+D
 @CTRL+L
 
@@ -90,7 +90,7 @@ UPDATE products SET price = 4.99 WHERE name = 'Mustard'
 SELECT * FROM products WHERE name = 'Mustard'
 
 # However, we can travel back in time to the timestamp between
-# our insert and update to see the old value.
+# our insert and update to see the old 5.99 value.
 # SELECT * FROM products FOR SYSTEM_TIME AS OF
 @AS_OF
 
