@@ -16,9 +16,10 @@ curl -d "SELECT 'Hello World'" -H "Content-Type: application/sql" -X POST http:/
 
 # Since endb schemas are per-document, there's no meaning to CREATE TABLE
 # and you start right away by inserting a row with SQL you already know.
+curl -d "INSERT INTO sales (name, price, at) VALUES ('Taro', 1.99, DATE '2023-08-30')" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
+
 # (As a side-note, this allows you to jam semi-structured data,
 #  like a random json document, straight into endb.)
-curl -d "INSERT INTO sales (name, price, at) VALUES ('Taro', 1.99, DATE '2023-08-30')" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
 
 # Here's the data we just inserted, returned as JSON-LD.
 curl -d "SELECT * FROM sales" -H "Content-Type: application/sql" -H "Accept: application/ld+json" -X POST http://localhost:3803/sql
@@ -33,7 +34,7 @@ curl -d "SELECT * FROM sales" -H "Content-Type: application/sql" -X POST http://
 # The HTTP API supports other ways to express a query,
 # but they're all equivalent.
 
-# let's clear the screen and look at a code example
+# Let's clear the screen and look at a code example.
 @CTRL+L
 
 # We have a few little scripts here, in JavaScript and Python.
@@ -42,20 +43,20 @@ wc -l examples/*.{py,mjs}
 cd examples
 
 # These examples are tiny wrapper libraries around standard HTTP libs.
-# Here's an insert sent with the Python library.
+# Here's an insert sent from Python.
 python3
 import endb
 endb.Endb().sql("INSERT INTO products {name: 'Mangoes', price: 2.99}")
 
 # We'll provide native client libraries for popular languages
 # in the future -- but for now, anyone can write a client library
-# with a few dozen lines of code.
+# like this with a few dozen lines of code.
 
-# let's drop out of python and take a closer look at Endb SQL
+# Let's drop out of python and take a closer look at Endb SQL.
 @CTRL+D
 @CTRL+L
 
-# We also have a little toy console we'll use for the remaining examples,
+# We'll use this little toy console for the remaining examples,
 # so we can focus on the SQL dialect.
 ./endb_console.py
 
@@ -85,23 +86,25 @@ INSERT INTO products {name: "Mustard", price: 5.99}
 SELECT strftime('%Y-%m-%dT%H:%M:%S', CURRENT_TIMESTAMP) AS now;
 UPDATE products SET price = 4.99 WHERE name = 'Mustard'
 
-# all queries default to running "as of now", which is the normal
-# behaviour you'd expect in any other database. we see the new 4.99 price.
+# All queries default to running "as of now", which is the normal
+# behaviour you'd expect in any other database.
+# We see the new 4.99 price.
 SELECT * FROM products WHERE name = 'Mustard'
 
 # However, we can travel back in time to the timestamp between
 # our insert and update to see the old 5.99 value.
-# SELECT * FROM products FOR SYSTEM_TIME AS OF
 @AS_OF
 
-# It's also possible to get an omniscient view of all system time.
+# It's possible to see across all of system time.
 # Here are all the past states for Mustard:
 SELECT * FROM products FOR SYSTEM_TIME ALL WHERE name = 'Mustard'
 
 # Deletes work the same way as update; they don't alter the past.
-# Of course, a modern database needs to comply with laws like GDPR,
+# Of course, any modern database needs to comply with laws like GDPR,
 # so endb supports ERASE.
 ERASE FROM products WHERE name = 'Mustard'
+
+# Mustard is gone.
 SELECT * FROM products FOR SYSTEM_TIME ALL
 
 # on to documents!
