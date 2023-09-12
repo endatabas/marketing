@@ -1,12 +1,23 @@
 # Endatabas Demo - 2023-09-11
 
-## Setup
+## Easy Instructions (Manual Mode)
 
-Requires `ydotool`, which requires root.
+If you came here because you watched the demo, this is probably what you want.
+
+Just copy and paste each command directly from [`commands.ydo`](commands.ydo).
+Ignore any lines that begin with a comment (`#`) or keycodes (`@`).
+The first `docker pull` command installs `endb` for you, so there are no prerequisites.
+
+Ignore the rest of this README.
+
+## Setup (Automated Mode)
+
+* Requires `ydotool`, which requires root
+
 [Install `ydotool` (1.0.x) from source.](https://askubuntu.com/questions/1413829/how-can-i-install-and-use-the-latest-ydotool-keyboard-automation-tool-working-o)
 The `ydotool` available in the 22.04 LTS repo will not work.
 
-## Running
+## Running (Automated Mode)
 
 1. start 3 terminal tabs in these directories, respectively:
     1. `marketing/2023-09-demo`
@@ -39,4 +50,5 @@ but the "script" requires manual intervention at a couple points:
 
 * type out the "SELECT ... AS OF" by hand
   (the script can't know what time is returned from `CURRENT_TIMESTAMP`)
+    * this is currently hacked around with some trickery (ctrl+f for `@AS_OF`), so this step isn't required.
 * 2x final `<alt>` taps if you want it to clean up after itself.
