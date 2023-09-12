@@ -133,8 +133,9 @@ SELECT * FROM products FOR SYSTEM_TIME ALL
 # Document-shaped rows support strongly-typed, native nested data.
 
 # we'll add a couple stores
-INSERT INTO stores {brand: "Schonfinkel's", addresses: [{city: "Ekaterinoslav", country: "Russia", active: 1888-09-29}, {city: "Gottingen", country: "Germany", active: 1920-12-20}]}
-INSERT INTO stores {brand: "Curry's", addresses: [{city: "Millis", country: "USA", active: 1900-09-12}, {city: "Boston", country: "Germany", active: 1930-07-15}]}
+INSERT INTO stores {brand: "Schonfinkel's", addresses: [{city: "Odessa", country: "Ukraine", active: 1906-09-01}, {city: "Gottingen", country: "Germany", active: 1920-12-20}]};
+INSERT INTO stores {brand: "Curry's", addresses: [{city: "Millis", country: "USA", active: 1900-09-12}, {city: "Boston", country: "Germany", active: 1930-07-15}]};
+INSERT INTO stores {brand: "Church's", addresses: [{city: "New Jersey", country: "United States of America", active: 1929-09-01}, {city: "Gottingen", country: "Germany", active: 1928-09-01}]};
 
 # ...select from a nested column
 SELECT addresses[0].city FROM stores
