@@ -18,6 +18,8 @@ docker run --rm -p 3803:3803 -v demo_data:/app/demo_data docker.io/endatabas/end
 # Hello World!
 curl -d "SELECT 'Hello World'" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
 
+@RETURN
+
 # Since endb schemas are per-document, there's no meaning to CREATE TABLE
 # and you start right away by inserting a row with SQL you already know.
 curl -d "INSERT INTO sales (name, price, at) VALUES ('Taro', 1.99, DATE '2023-08-30')" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
@@ -25,12 +27,18 @@ curl -d "INSERT INTO sales (name, price, at) VALUES ('Taro', 1.99, DATE '2023-08
 # (As a side-note, this allows you to jam semi-structured data,
 #  like a random json document, straight into endb.)
 
+@RETURN
+
 # Here's the data we just inserted, returned as JSON-LD.
 curl -d "SELECT * FROM sales" -H "Content-Type: application/sql" -H "Accept: application/ld+json" -X POST http://localhost:3803/sql
+
+@RETURN
 
 # Here's a more interesting statement: we'll use a json content type, insert a jagged doc
 # (with different columns than before) with a JSON-LD typed parameter
 curl -d '{"q": "INSERT INTO sales {name: ?, price: ?, at: ?}", "p": ["Mangoes", 15.99, {"@type": "xsd:date", "@value": "2023-09-05"}]}' -H "Content-Type: application/json" -X POST http://localhost:3803/sql
+
+@RETURN
 
 # We'll get our sales back out as vanilla JSON.
 curl -d "SELECT * FROM sales" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
@@ -80,8 +88,12 @@ INSERT INTO sales {name: "Mangoes", price: 22.99, at: 2023-09-07T07:34:02}
 # Endb also has ISO literals for dates, times, intervals
 # as well as all the SQL literals you'd expect.
 
+@RETURN
+
 # All joins in endb are ad-hoc.
 SELECT * FROM sales s JOIN products p ON s.name = p.name
+
+@RETURN
 
 # Here's a simple aggregate.
 SELECT p.name, SUM(s.price) AS total FROM sales s JOIN products p ON s.name = p.name GROUP BY p.name
@@ -98,27 +110,42 @@ SELECT p.name, SUM(s.price) AS total FROM sales s JOIN products p ON s.name = p.
 
 INSERT INTO products {name: "Mustard", price: 5.99}
 
+@RETURN
+
 # We'll grab the current time before we update, so we can time-travel back here later.
 SELECT strftime('%Y-%m-%dT%H:%M:%S', CURRENT_TIMESTAMP) AS now;
+
+@RETURN
+
 UPDATE products SET price = 4.99 WHERE name = 'Mustard'
+
+@RETURN
 
 # All queries default to running "as of now", which is the normal
 # behaviour you'd expect in any other database.
 # We see the new 4.99 price.
 SELECT * FROM products WHERE name = 'Mustard'
 
+@RETURN
+
 # However, we can travel back in time to the timestamp between
 # our insert and update to see the old 5.99 value.
 @AS_OF
+
+@RETURN
 
 # It's possible to see across all of system time.
 # Here are all the past states for Mustard:
 SELECT * FROM products FOR SYSTEM_TIME ALL WHERE name = 'Mustard'
 
+@RETURN
+
 # Deletes work the same way as update; they don't alter the past.
 # Of course, any modern database needs to comply with laws like GDPR,
 # so endb supports ERASE.
 ERASE FROM products WHERE name = 'Mustard'
+
+@RETURN
 
 # Mustard is gone.
 SELECT * FROM products FOR SYSTEM_TIME ALL
@@ -137,8 +164,12 @@ INSERT INTO stores {brand: "Schonfinkel's", addresses: [{city: "Odessa", country
 INSERT INTO stores {brand: "Curry's", addresses: [{city: "Millis", country: "USA", active: 1900-09-12}, {city: "Boston", country: "Germany", active: 1930-07-15}]};
 INSERT INTO stores {brand: "Church's", addresses: [{city: "New Jersey", country: "United States of America", active: 1929-09-01}, {city: "Gottingen", country: "Germany", active: 1928-09-01}]};
 
+@RETURN
+
 # ...select from a nested column
 SELECT addresses[0].city FROM stores
+
+@RETURN
 
 # ...and try recursion
 SELECT addresses..country FROM stores
@@ -146,10 +177,15 @@ SELECT addresses..country FROM stores
 # Endb's documents also support row literals, wildcards, spreads,
 # shorthand fields, computed fields, and path functions.
 
+@RETURN
+
 # While many people will prefer endb's path functions for manipulating nested data,
 # the 'update' statement also allows path expressions.
 
 UPDATE stores SET $.addresses[1].city = 'Gottingen' WHERE brand = "Curry's";
+
+@RETURN
+
 SELECT * FROM stores WHERE brand = "Curry's";
 
 

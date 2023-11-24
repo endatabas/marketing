@@ -50,6 +50,9 @@ def run_next():
     elif re.match('^@CTRL\+PGDN$', c.strip()):
         # 29 = CTRL, 109 = 'PGDN'
         os.system('ydotool key --key-delay 1 29:1 109:1 109:0 29:0')
+    elif re.match('^@RETURN$', c.strip()):
+        # 28 = RETURN
+        os.system('ydotool key --key-delay 1 28:1 28:0')
     elif re.match('^@AS_OF$', c.strip()):
         test_current_timestamp()
         os.system(f'ydotool type --next-delay 2 --key-delay 0 "SELECT * FROM products FOR SYSTEM_TIME AS OF {saved_timestamp};"')
