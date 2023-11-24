@@ -36,6 +36,13 @@ sudo ./loop.py
 All keyboard input other than `<ctrl+c>` and `<alt>` is ignored.
 Just tap `<alt>` to run the upcoming command.
 
+## Recording
+
+OBS Studio is recommended.
+
+1. Gnome includes a screencast tool: https://help.gnome.org/users/gnome-help/stable/screen-shot-record.html.en
+2. OBS Studio has a flatpak: https://obsproject.com/kb/linux-installation
+
 ## Caveat Emptor
 
 Be aware that if you don't get to the end of the commands.ydo "script"
