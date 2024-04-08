@@ -30,8 +30,7 @@ systemctl start ydotool
 sudo ./loop.py
 ```
 
-3. switch to the second terminal tab
-    * be aware the script will switch to the third tab on its own
+3. start tapping `<alt>`
 
 All keyboard input other than `<ctrl+c>` and `<alt>` is ignored.
 Just tap `<alt>` to run the upcoming command.

@@ -63,7 +63,7 @@ def run_next():
 
 print('resetting environment. ignore any docker volume errors.')
 reset()
-print('event loop starting. switch to a new tab/window and press <alt> to begin.')
+print('event loop starting. press <alt> to begin. ctrl+c to quit.')
 while True:
     event = keyboard.read_event()
     if event.event_type == 'down':
