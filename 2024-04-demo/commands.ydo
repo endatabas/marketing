@@ -31,81 +31,57 @@ INSERT INTO sales (name, price, at) VALUES ('Taro', 1.99, DATE '2023-08-30');
 
 @RETURN
 
-# (As a side-note, this allows you to jam semi-structured data,
+# Endb also lets you insert documents directly.
+
+INSERT INTO products {name: 'Mangoes', price: 2.99};
+
+# (This allows you to jam semi-structured data,
 #  like random json documents, straight into endb.)
 
 @RETURN
 
-# Here's the data we just inserted.
+# Here is the sales data we just inserted.
 SELECT * FROM sales;
 
 @RETURN
 
-# Here's a more interesting statement.
-# We'll insert jagged data (with different columns than before), as a document directly.
-# Endb is strongly typed.
+# Let's insert some jagged data,with different columns than before.
+# Note that Endb is strongly typed.
 # In the console, types are inferred.
 # But clients can specify types explicitly, using JSON-LD.
 
-INSERT INTO products {name: 'Mangoes', price: 2.99};
- INSERT INTO sales {name: "Mangoes", price: 15.99, at: 2023-09-05, note: "Alphonso"};
+INSERT INTO sales {name: "Mangoes", price: 15.99, at: 2023-09-05, note: "Alphonso"};
 
 @RETURN
 
-
-#################################
-# Let's look at a code example. #
-#################################
-
-@CTRL+L
-
-# We have a few little scripts here, in JavaScript and Python.
-# Each one is under a hundred lines.
-wc -l examples/*.{py,mjs}
-cd examples
-
-# These examples are tiny wrapper libraries around standard HTTP libs.
-# Here's an insert sent from Python.
-python3
-import endb
-endb.Endb().sql("")
-
-# We'll provide native client libraries for popular languages in the future
-# -- but for now, anyone can write a client library like this
-# with a few dozen lines of code.
-
-
-################################################################
-# Let's drop out of python and take a closer look at Endb SQL. #
-################################################################
-
-@CTRL+D
-@CTRL+L
-
-# We'll use this little toy console for the remaining examples,
-# so we can focus on the SQL dialect.
-./endb_console.py
-
-# First up, let's have a look at some example literals.
+# Let's take a closer look at some example literals.
 # The TEXT datatype permits double quotes.
 # Timestamps can be represented in either SQL or ISO formats.
-INSERT INTO sales {name: "Mangoes", price: 22.99, at: 2023-09-07T07:34:02}
+
+INSERT INTO sales {name: "Mangoes", price: 22.99, at: 2023-09-07T07:34:02};
 
 # Endb also has ISO literals for dates, times, intervals
-# as well as all the SQL literals you'd expect.
+# and all the standard SQL literals you'd expect.
 
 @RETURN
 
 # All joins in endb are ad-hoc.
-# TODO: mention graph?
-SELECT * FROM sales s JOIN products p ON s.name = p.name
+# Exploratory queries give users a lot of the power of a graph database.
+
+SELECT * FROM sales s JOIN products p ON s.name = p.name;
 
 @RETURN
 
-# TODO: mention HTAP
 # Here's a simple aggregate.
-SELECT p.name, SUM(s.price) AS total FROM sales s JOIN products p ON s.name = p.name GROUP BY p.name
 
+SELECT p.name, SUM(s.price) AS total
+  FROM sales s
+  JOIN products p
+  ON s.name = p.name
+  GROUP BY p.name;
+
+# Endb stores all data as Apache Arrow.
+# Analytics over columnar storage can be very fast.
 
 ##########################
 # Time for full history! #
@@ -113,50 +89,56 @@ SELECT p.name, SUM(s.price) AS total FROM sales s JOIN products p ON s.name = p.
 
 @CTRL+L
 
-# When we say "full history", we really mean (to programmers, at least)
-# that data in endb is immutable.
+# When we say "full history", we really mean that data in endb is immutable.
 
-INSERT INTO products {name: "Mustard", price: 5.99}
+INSERT INTO products {name: "Mustard", price: 5.99};
 
 @RETURN
 
 # We'll grab the current time before we update, so we can time-travel back here later.
+
 SELECT strftime('%Y-%m-%dT%H:%M:%S', CURRENT_TIMESTAMP) AS now;
 
 @RETURN
 
-UPDATE products SET price = 4.99 WHERE name = 'Mustard'
+UPDATE products SET price = 4.99 WHERE name = 'Mustard';
 
 @RETURN
 
 # All queries default to running "as of now", which is the normal
-# behaviour you'd expect in any other database.
+# behaviour you'd expect in your regular, mutable database.
 # We see the new 4.99 price.
-SELECT * FROM products WHERE name = 'Mustard'
+
+SELECT * FROM products WHERE name = 'Mustard';
 
 @RETURN
 
 # However, we can travel back in time to the timestamp between
 # our insert and update to see the old 5.99 value.
+
 @AS_OF
 
 @RETURN
 
 # It's possible to see across all of system time.
 # Here are all the past states for Mustard:
-SELECT * FROM products FOR SYSTEM_TIME ALL WHERE name = 'Mustard'
+
+SELECT * FROM products FOR SYSTEM_TIME ALL WHERE name = 'Mustard';
 
 @RETURN
 
-# Deletes work the same way as update; they don't alter the past.
+# DELETE works the same way as UPDATE.
+# It doesn't alter the past, it behaves much like a hand-rolled soft-delete.
+#
 # Of course, any modern database needs to comply with laws like GDPR,
 # so endb supports ERASE.
-ERASE FROM products WHERE name = 'Mustard'
+
+ERASE FROM products WHERE name = 'Mustard';
 
 @RETURN
 
 # Mustard is gone.
-SELECT * FROM products FOR SYSTEM_TIME ALL
+SELECT * FROM products FOR SYSTEM_TIME ALL;
 
 
 ####################
@@ -168,6 +150,7 @@ SELECT * FROM products FOR SYSTEM_TIME ALL
 # Document-shaped rows support strongly-typed, native nested data.
 
 # we'll add a couple stores
+
 INSERT INTO stores {brand: "Schonfinkel's", addresses: [{city: "Odessa", country: "Ukraine", active: 1906-09-01}, {city: "Gottingen", country: "Germany", active: 1920-12-20}]};
 INSERT INTO stores {brand: "Curry's", addresses: [{city: "Millis", country: "USA", active: 1900-09-12}, {city: "Boston", country: "Germany", active: 1930-07-15}]};
 INSERT INTO stores {brand: "Church's", addresses: [{city: "New Jersey", country: "United States of America", active: 1929-09-01}, {city: "Gottingen", country: "Germany", active: 1928-09-01}]};
@@ -175,12 +158,14 @@ INSERT INTO stores {brand: "Church's", addresses: [{city: "New Jersey", country:
 @RETURN
 
 # ...select from a nested column
-SELECT addresses[0].city FROM stores
+
+SELECT addresses[0].city FROM stores;
 
 @RETURN
 
 # ...and try recursion
-SELECT addresses..country FROM stores
+
+SELECT addresses..country FROM stores;
 
 # Endb's documents also support row literals, wildcards, spreads,
 # shorthand fields, computed fields, and path functions.
@@ -196,6 +181,8 @@ UPDATE stores SET $.addresses[1].city = 'Gottingen' WHERE brand = "Curry's";
 
 SELECT * FROM stores WHERE brand = "Curry's";
 
+# Here, we've changed the nested city field for "Curry's".
+
 
 #############################################
 # Last, we'll have a look at Endb's schema. #
@@ -205,26 +192,31 @@ SELECT * FROM stores WHERE brand = "Curry's";
 
 # Even without forcing strict schema on tables, it is possible to inspect
 # the information schema through regular queries.
+
 SELECT * FROM information_schema.columns WHERE table_name = 'stores';
 
 # Neat, right?
 
 
-# TODO: open source and standards-based
-#####################
-# Endb speaks HTTP. #
-#####################
+############################################
+# Endb is open source and standards-based. #
+############################################
 
-# Hello World!
-curl -d "SELECT 'Hello World'" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
+# It speaks HTTP and WebSockets, so even without a console or client,
+# it's possible to send queries over simple tools like curl and websocat.
+
+curl -d "SELECT * FROM sales;" -H "Content-Type: application/sql" -X POST http://localhost:3803/sql
+
+# Endb SQL is more standards-compliant than MySQL, SQL Server, and Oracle.
 
 @RETURN
 
+# You can try Endb directly in a browser with our Wasm Demo build at:
+# endatabas.com/demo
 
-# If you'd like to try Endb yourself, this demo is available at
-# endatabas.com/2024_demo
 @CTRL+D
-echo "endatabas.com/2024_demo"
+
+echo "https://www.endatabas.com/demo"
 
 # done! reset
 cd ~/tmp/endb/
