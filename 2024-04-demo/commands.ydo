@@ -10,11 +10,9 @@ docker run --rm -p 3803:3803 -v demo_data:/app/demo_data docker.io/endatabas/end
 
 @CTRL+PGDN
 
-##################################
-# Let's download an Endb client. #
-##################################
-
-# We'll use the Python client for this demo.
+##############################################
+# We'll use the Python client for this demo. #
+##############################################
 
 pip install endb
 
@@ -41,12 +39,13 @@ INSERT INTO products {name: 'Mangoes', price: 2.99};
 @RETURN
 
 # Here is the sales data we just inserted.
+
 SELECT * FROM sales;
 
 @RETURN
 
-# Let's insert some jagged data,with different columns than before.
-# Note that Endb is strongly typed.
+# Let's insert some jagged data, with different columns than before.
+# Even though Endb is schemaless, it is also strongly typed.
 # In the console, types are inferred.
 # But clients can specify types explicitly, using JSON-LD.
 
@@ -89,7 +88,7 @@ SELECT p.name, SUM(s.price) AS total
 
 @CTRL+L
 
-# When we say "full history", we really mean that data in endb is immutable.
+# When we say "full history", we mean that data in endb is immutable.
 
 INSERT INTO products {name: "Mustard", price: 5.99};
 
@@ -106,7 +105,7 @@ UPDATE products SET price = 4.99 WHERE name = 'Mustard';
 @RETURN
 
 # All queries default to running "as of now", which is the normal
-# behaviour you'd expect in your regular, mutable database.
+# behaviour you'd expect in a regular, mutable database.
 # We see the new 4.99 price.
 
 SELECT * FROM products WHERE name = 'Mustard';
@@ -128,10 +127,10 @@ SELECT * FROM products FOR SYSTEM_TIME ALL WHERE name = 'Mustard';
 @RETURN
 
 # DELETE works the same way as UPDATE.
-# It doesn't alter the past, it behaves much like a hand-rolled soft-delete.
+# Instead of destroying data, it behaves like a safe soft-delete.
 #
 # Of course, any modern database needs to comply with laws like GDPR,
-# so endb supports ERASE.
+# so endb supports an ERASE statement.
 
 ERASE FROM products WHERE name = 'Mustard';
 
@@ -172,8 +171,8 @@ SELECT addresses..country FROM stores;
 
 @RETURN
 
-# While many people will prefer endb's path functions for manipulating nested data,
-# the 'update' statement also allows path expressions.
+# In addition to path *functions*,
+# the 'update' statement also allows path *expressions*.
 
 UPDATE stores SET $.addresses[1].city = 'Gottingen' WHERE brand = "Curry's";
 
@@ -197,6 +196,7 @@ SELECT * FROM information_schema.columns WHERE table_name = 'stores';
 
 # Neat, right?
 
+@CTRL+D
 
 ############################################
 # Endb is open source and standards-based. #
@@ -213,8 +213,6 @@ curl -d "SELECT * FROM sales;" -H "Content-Type: application/sql" -X POST http:/
 
 # You can try Endb directly in a browser with our Wasm Demo build at:
 # endatabas.com/demo
-
-@CTRL+D
 
 echo "https://www.endatabas.com/demo"
 
