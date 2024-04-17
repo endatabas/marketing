@@ -3,6 +3,8 @@
 
 @RETURN
 
+@CTRL+L
+
 # Endatabas is a SQL document database with full history.
 # This demo will explain what that means.
 
@@ -85,6 +87,8 @@ SELECT p.name, SUM(s.price) AS total
 
 # Endb stores all data as Apache Arrow.
 # Analytics over columnar storage can be very fast.
+
+@RETURN
 
 ################################
 # Let's look at "full history" #
