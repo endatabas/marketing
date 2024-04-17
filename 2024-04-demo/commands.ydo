@@ -147,6 +147,8 @@ ERASE FROM products WHERE name = 'Mustard';
 # Mustard is gone.
 SELECT * FROM products FOR SYSTEM_TIME ALL;
 
+@RETURN
+
 
 ###############################
 # Now let's look at Documents #
@@ -190,6 +192,9 @@ SELECT * FROM stores WHERE brand = "Curry's";
 
 # Here, we've changed the nested city field for "Curry's".
 
+@CTRL+D
+
+@RETURN
 
 ############################################
 # Endb is open source and standards-based. #
@@ -209,5 +214,6 @@ curl -d "SELECT * FROM sales;" -H "Content-Type: application/sql" -X POST http:/
 
 echo "https://www.endatabas.com/demo"
 
-# done! reset
-cd ~/tmp/endb/
+# done!
+
+@RETURN
